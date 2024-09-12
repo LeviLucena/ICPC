@@ -1,4 +1,4 @@
-# ICPC Insights - Plataforma de Inteligência Competitiva e Prospeção de Clientes 💡
+# ICPC Insights - Plataforma de Inteligência Competitiva e Prospecção de Clientes 💡
 
 **ICPC Insights** é uma plataforma web desenvolvida para fornecer insights avançados e recomendações baseadas em dados sobre empresas. A ferramenta centraliza e visualiza dados cruciais, como comportamento do usuário, tendências de mercado, análise de concorrentes e previsões de vendas, oferecendo uma visão estratégica para os usuários.
 
