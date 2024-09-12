@@ -88,5 +88,5 @@ git commit -m "Adiciona nova funcionalidade X"
 ```
 4. Envie um Pull Request e aguarde a análise.
 
-## 5. 📜 Licença
+## 📜 Licença
 Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
