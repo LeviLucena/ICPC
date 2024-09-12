@@ -1,0 +1,965 @@
+<html>
+<!-- ====================================================================== -->
+<!-- Desenvolvido por Levi Lucena - linkedin.com/in/levilucena -->
+<!-- ====================================================================== -->
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Início - ICPC Insights💡</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo span {
+      font-size: 18px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    header nav ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+    }
+
+    header nav ul li {
+      margin-left: 20px;
+    }
+
+    header nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    header nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 20px auto 0;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #companySearch {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #searchButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #searchButton:hover {
+      background-color: #45a049;
+    }
+
+    .chart-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .chart {
+      width: 45%;
+      margin-bottom: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-explanation {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    #treeMap {
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    #recommendationsContainer {
+      padding: 15px;
+    }
+
+    #recommendationsList {
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    #recommendationsList li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 20px 0;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-section {
+      margin: 10px;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 5px;
+    }
+
+    .footer-section ul li a {
+      color: #ddd;
+      text-decoration: none;
+    }
+
+    .footer-section ul li a:hover {
+      color: white;
+    }
+
+    @media (max-width: 1200px) {
+      .chart {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <svg width="50" height="50" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="#4CAF50" />
+          <text x="25" y="30" font-size="20" text-anchor="middle" fill="white">ICPC</text>
+        </svg>
+        <span>Plataforma ICPC</span>
+      </div>
+      <nav>
+        <ul>
+          <script>
+            window.ga = window.ga || function () {
+              (ga.q = ga.q || []).push(arguments)
+            };
+            ga.l = +new Date;
+            ga('create', 'UA-105392568-1', 'auto');
+            ga('send', 'pageview');
+          </script>
+          <li><a href="#">Início</a></li>
+          <li><a href="sobre.html" target="_blank">Sobre Nós</a></li>
+          <li><a href="links.html" onclick="openCenteredWindow(this.href, 1200, 600); return false;">Serviços</a></li>
+          <li><a href="#">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container">
+    <h1>Visualização Avançada de Dados de Empresas</h1>
+    <div class="search-container">
+      <input type="text" id="companySearch" placeholder="Digite o nome da empresa">
+      <button id="searchButton">Buscar</button>
+    </div>
+    <h2 id="companyName"></h2>
+    <div class="chart-container">
+      <div class="chart">
+        <canvas id="contactChart"></canvas>
+        <div class="chart-explanation" id="contactChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="userBehaviorChart"></canvas>
+        <div class="chart-explanation" id="userBehaviorChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="marketTrendsChart"></canvas>
+        <div class="chart-explanation" id="marketTrendsChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="salesChart"></canvas>
+        <div class="chart-explanation" id="salesChartExplanation"></div>
+      </div>
+      <div class="chart" id="treeMap"></div>
+      <div class="chart">
+        <canvas id="customerIdentificationChart"></canvas>
+        <div class="chart-explanation" id="customerIdentificationChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="competitorAnalysisChart"></canvas>
+        <div class="chart-explanation" id="competitorAnalysisChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="marketOpportunitiesChart"></canvas>
+        <div class="chart-explanation" id="marketOpportunitiesChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="jobDemandChart"></canvas>
+        <div class="chart-explanation" id="jobDemandChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="salaryRangeChart"></canvas>
+        <div class="chart-explanation" id="salaryRangeChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="jobLocationChart"></canvas>
+        <div class="chart-explanation" id="jobLocationChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="experienceRequiredChart"></canvas>
+        <div class="chart-explanation" id="experienceRequiredChartExplanation"></div>
+      </div>
+      <div class="chart">
+        <canvas id="salesForecastChart"></canvas>
+        <div class="chart-explanation" id="salesForecastChartExplanation"></div>
+      </div>
+      <div class="chart" id="recommendationsContainer">
+        <h3>Recomendações Automáticas</h3>
+        <ul id="recommendationsList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Plataforma de Inteligência Competitiva e Prospeção de Clientes (ICPC)</h3>
+        <p>Transformando dados em estratégias inteligentes para o seu negócio.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Links Rápidos</h3>
+        <ul>
+          <li><a href="#">Início</a></li>
+          <li><a href="sobre.html" target="_blank">Sobre Nós</a></li>
+          <li><a href="links.html" onclick="openCenteredWindow(this.href, 1200, 600); return false;">
+              target="_blank">Serviços</a></li>
+          <li><a href="#">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contato</h3>
+        <ul>
+          <li>Email: contato@icpc.com</li>
+          <li>Telefone: (11) 1234-5678</li>
+          <li>Endereço: Av. Paulista, 1000 - São Paulo, SP</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top: 20px;">
+      <p>&copy; 2023 Plataforma ICPC. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    let contactChart, userBehaviorChart, marketTrendsChart, salesChart, customerIdentificationChart, competitorAnalysisChart, marketOpportunitiesChart, jobDemandChart, salaryRangeChart, jobLocationChart, experienceRequiredChart, salesForecastChart;
+
+    function getRandomActivity() {
+      const activities = [
+        "Marketing Digital", "Desenvolvimento de Produto", "Atendimento ao Cliente",
+        "Pesquisa de Mercado", "Gestão de Projetos", "Recursos Humanos",
+        "Vendas", "Logística", "Finanças", "Inovação Tecnológica",
+        "Treinamento", "Controle de Qualidade", "Relações Públicas",
+        "Sustentabilidade", "Análise de Dados", "Design de Produto",
+        "Gestão de Fornecedores", "Desenvolvimento de Software", "Social Media",
+        "Suporte Técnico"
+      ];
+      return activities[Math.floor(Math.random() * activities.length)];
+    }
+
+    function generateSalesForecast() {
+      return Array.from({ length: 6 }, () => Math.floor(Math.random() * 1500) + 500);
+    }
+
+    function generateRecommendations() {
+      const recommendations = [
+        "Aumente o investimento em marketing digital para o Produto 1.",
+        "Considere expandir para novos mercados geográficos.",
+        "Implemente um programa de fidelidade para aumentar a retenção de clientes.",
+        "Otimize o processo de logística para reduzir custos operacionais.",
+        "Desenvolva uma estratégia de conteúdo para melhorar o engajamento nas redes sociais.",
+        "Invista em treinamento de equipe para melhorar a produtividade.",
+        "Explore parcerias estratégicas para expandir a base de clientes.",
+        "Implemente um sistema de feedback do cliente para melhorar a satisfação.",
+        "Considere a adoção de tecnologias de automação para otimizar processos internos.",
+        "Analise a possibilidade de lançar uma linha de produtos complementares."
+      ];
+      return recommendations.sort(() => 0.5 - Math.random()).slice(0, 5);
+    }
+
+    function generateRandomData(company) {
+      const activities = [];
+      let totalValue = 0;
+      for (let i = 0; i < 4; i++) {
+        const value = Math.floor(Math.random() * 100);
+        totalValue += value;
+        activities.push({ name: getRandomActivity(), value: value });
+      }
+      activities.forEach(activity => {
+        activity.percentage = ((activity.value / totalValue) * 100).toFixed(2);
+      });
+
+      return {
+        contactData: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100)
+        ],
+        userBehavior: [
+          Math.floor(Math.random() * 200),
+          Math.floor(Math.random() * 200),
+          Math.floor(Math.random() * 200),
+          Math.floor(Math.random() * 200),
+          Math.floor(Math.random() * 200)
+        ],
+        marketTrends: {
+          online: Array.from({ length: 6 }, () => Math.floor(Math.random() * 50)),
+          store: Array.from({ length: 6 }, () => Math.floor(Math.random() * 50))
+        },
+        sales: {
+          product1: Array.from({ length: 6 }, () => Math.floor(Math.random() * 1000)),
+          product2: Array.from({ length: 6 }, () => Math.floor(Math.random() * 1000)),
+          product3: Array.from({ length: 6 }, () => Math.floor(Math.random() * 1000))
+        },
+        activities: activities,
+        customerIdentification: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100)
+        ],
+        competitorAnalysis: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100)
+        ],
+        marketOpportunities: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100)
+        ],
+        jobDemand: [
+          Math.floor(Math.random() * 50),
+          Math.floor(Math.random() * 50),
+          Math.floor(Math.random() * 50),
+          Math.floor(Math.random() * 50),
+          Math.floor(Math.random() * 50)
+        ],
+        salaryRange: [
+          Math.floor(Math.random() * 5000) + 3000,
+          Math.floor(Math.random() * 8000) + 6000,
+          Math.floor(Math.random() * 12000) + 10000
+        ],
+        jobLocation: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100)
+        ],
+        experienceRequired: [
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 100)
+        ],
+        salesForecast: generateSalesForecast(),
+        recommendations: generateRecommendations()
+      };
+    }
+
+    function generateChartExplanation(chartType, data) {
+      switch (chartType) {
+        case 'contact':
+          const preferredMethod = data.indexOf(Math.max(...data));
+          const methods = ['E-mail', 'Telefone', 'Redes Sociais', 'Formulário Web'];
+          return `O método de contato preferido é ${methods[preferredMethod]}, representando ${data[preferredMethod]}% dos contatos. Isso sugere que a empresa deve priorizar este canal para comunicações futuras.`;
+        case 'userBehavior':
+          const maxTime = Math.max(...data);
+          const maxTimeIndex = data.indexOf(maxTime);
+          const pages = ['Página Inicial', 'Produtos', 'Sobre Nós', 'Contato', 'Blog'];
+          return `Os usuários passam mais tempo na página "${pages[maxTimeIndex]}" (${maxTime} segundos em média). Isso indica um alto interesse neste conteúdo, sugerindo potencial para otimização e conversão.`;
+        case 'marketTrends':
+          return `As tendências de vendas mostram uma diferença significativa entre vendas online e nas lojas, com vendas online sendo ${data.online.reduce((a, b) => a + b, 0)}% do total e vendas em loja ${data.store.reduce((a, b) => a + b, 0)}%. Isso sugere um foco estratégico em canais online.`;
+        case 'sales':
+          return `As vendas dos produtos nos primeiros seis meses variam bastante, indicando a necessidade de estratégias específicas para cada produto.`;
+        case 'customerIdentification':
+          return `A precisão de identificação dos clientes está baseada em fatores como perfil demográfico e histórico de compras, permitindo um direcionamento mais eficaz de campanhas.`;
+        case 'competitorAnalysis':
+          return `A análise mostra que a força da marca da empresa é crucial para sua competitividade no mercado, necessitando de melhorias em áreas como inovação e preço.`;
+        case 'marketOpportunities':
+          return `As oportunidades de mercado são avaliadas com base em expansão geográfica e novos produtos, indicando áreas chave para crescimento.`;
+        case 'jobDemand':
+          return `As demandas de emprego mostram uma tendência crescente para cargos de desenvolvedor e analista de dados, sugerindo necessidade de formação profissional nessa área.`;
+        case 'salaryRange':
+          return `As faixas salariais variam significativamente entre os níveis júnior, pleno e sênior, refletindo o valor das habilidades no mercado atual.`;
+        case 'jobLocation':
+          return `A localização das vagas mostra uma forte preferência por modalidades remotas e híbridas, refletindo novas tendências de trabalho.`;
+        case 'experienceRequired':
+          return `As exigências de experiência variam, com a maioria das vagas pedindo 3-5 anos, indicando uma necessidade de talentos na faixa intermediária.`;
+        case 'salesForecast':
+          return `A previsão de vendas para os próximos meses sugere uma tendência otimista, com um crescimento previsto em todos os produtos.`;
+        default:
+          return 'Análise não disponível para este gráfico.';
+      }
+    }
+
+    function updateCharts(company) {
+      const data = generateRandomData(company);
+
+      document.getElementById('companyName').textContent = company;
+
+      contactChart.data.datasets[0].data = data.contactData;
+      contactChart.update();
+      document.getElementById('contactChartExplanation').textContent = generateChartExplanation('contact', data.contactData);
+
+      userBehaviorChart.data.datasets[0].data = data.userBehavior;
+      userBehaviorChart.update();
+      document.getElementById('userBehaviorChartExplanation').textContent = generateChartExplanation('userBehavior', data.userBehavior);
+
+      marketTrendsChart.data.datasets[0].data = data.marketTrends.online;
+      marketTrendsChart.data.datasets[1].data = data.marketTrends.store;
+      marketTrendsChart.update();
+      document.getElementById('marketTrendsChartExplanation').textContent = generateChartExplanation('marketTrends', data.marketTrends);
+
+      salesChart.data.datasets[0].data = data.sales.product1;
+      salesChart.data.datasets[1].data = data.sales.product2;
+      salesChart.data.datasets[2].data = data.sales.product3;
+      salesChart.update();
+      document.getElementById('salesChartExplanation').textContent = generateChartExplanation('sales', data.sales);
+
+      customerIdentificationChart.data.datasets[0].data = data.customerIdentification;
+      customerIdentificationChart.update();
+      document.getElementById('customerIdentificationChartExplanation').textContent = generateChartExplanation('customerIdentification', data.customerIdentification);
+
+      competitorAnalysisChart.data.datasets[0].data = data.competitorAnalysis;
+      competitorAnalysisChart.update();
+      document.getElementById('competitorAnalysisChartExplanation').textContent = generateChartExplanation('competitorAnalysis', data.competitorAnalysis);
+
+      marketOpportunitiesChart.data.datasets[0].data = data.marketOpportunities;
+      marketOpportunitiesChart.update();
+      document.getElementById('marketOpportunitiesChartExplanation').textContent = generateChartExplanation('marketOpportunities', data.marketOpportunities);
+
+      jobDemandChart.data.datasets[0].data = data.jobDemand;
+      jobDemandChart.update();
+      document.getElementById('jobDemandChartExplanation').textContent = generateChartExplanation('jobDemand', data.jobDemand);
+
+      salaryRangeChart.data.datasets[0].data = data.salaryRange;
+      salaryRangeChart.update();
+      document.getElementById('salaryRangeChartExplanation').textContent = generateChartExplanation('salaryRange', data.salaryRange);
+
+      jobLocationChart.data.datasets[0].data = data.jobLocation;
+      jobLocationChart.update();
+      document.getElementById('jobLocationChartExplanation').textContent = generateChartExplanation('jobLocation', data.jobLocation);
+
+      experienceRequiredChart.data.datasets[0].data = data.experienceRequired;
+      experienceRequiredChart.update();
+      document.getElementById('experienceRequiredChartExplanation').textContent = generateChartExplanation('experienceRequired', data.experienceRequired);
+
+      salesForecastChart.data.datasets[0].data = data.salesForecast;
+      salesForecastChart.update();
+      document.getElementById('salesForecastChartExplanation').textContent = generateChartExplanation('salesForecast', data.salesForecast);
+
+      const recommendationsList = document.getElementById('recommendationsList');
+      recommendationsList.innerHTML = data.recommendations.map(rec => `<li>${rec}</li>`).join('');
+
+      updateTreeMap(data.activities);
+    }
+
+    function updateTreeMap(activities) {
+      const width = document.getElementById('treeMap').offsetWidth - 30; // Subtract padding
+      const height = 370; // Reduce height to account for padding
+
+      d3.select("#treeMap").select("svg").remove();
+
+      const treeMapData = {
+        name: "Atividades",
+        children: activities
+      };
+
+      const treemap = d3.treemap()
+        .size([width, height])
+        .padding(2)
+        .round(true);
+
+      const root = d3.hierarchy(treeMapData)
+        .sum(d => d.value)
+        .sort((a, b) => b.value - a.value);
+
+      treemap(root);
+
+      const svg = d3.select("#treeMap")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+      const cell = svg.selectAll("g")
+        .data(root.leaves())
+        .enter().append("g")
+        .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+      cell.append("rect")
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0)
+        .style("fill", (d, i) => color(i))
+        .style("opacity", 0.7);
+
+      cell.append("text")
+        .attr("x", 5)
+        .attr("y", 15)
+        .text(d => `${d.data.name}`)
+        .attr("font-size", "12px")
+        .attr("fill", "white");
+
+      cell.append("text")
+        .attr("x", 5)
+        .attr("y", 30)
+        .text(d => `${d.data.percentage}%`)
+        .attr("font-size", "10px")
+        .attr("fill", "white");
+    }
+
+    window.onload = function () {
+      const ctx1 = document.getElementById('contactChart').getContext('2d');
+      contactChart = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+          labels: ['E-mail', 'Telefone', 'Redes Sociais', 'Formulário Web'],
+          datasets: [{
+            label: 'Métodos de Contato',
+            data: [0, 0, 0, 0],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Métodos de Contato Preferidos'
+            }
+          }
+        }
+      });
+
+      const ctx2 = document.getElementById('userBehaviorChart').getContext('2d');
+      userBehaviorChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['Página Inicial', 'Produtos', 'Sobre Nós', 'Contato', 'Blog'],
+          datasets: [{
+            label: 'Tempo Médio (segundos)',
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(153, 102, 255, 0.7)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Tempo Médio por Página'
+            }
+          }
+        }
+      });
+
+      const ctx3 = document.getElementById('marketTrendsChart').getContext('2d');
+      marketTrendsChart = new Chart(ctx3, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+          datasets: [{
+            label: 'Vendas Online',
+            data: [0, 0, 0, 0, 0, 0],
+            borderColor: 'rgb(255, 99, 132)',
+            tension: 0.1
+          }, {
+            label: 'Vendas em Loja',
+            data: [0, 0, 0, 0, 0, 0],
+            borderColor: 'rgb(54, 162, 235)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Tendências de Vendas'
+            }
+          }
+        }
+      });
+
+      const ctx4 = document.getElementById('salesChart').getContext('2d');
+      salesChart = new Chart(ctx4, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+          datasets: [
+            {
+              label: 'Produto 1',
+              data: [0, 0, 0, 0, 0, 0],
+              backgroundColor: 'rgba(255, 99, 132, 0.7)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Produto 2',
+              data: [0, 0, 0, 0, 0, 0],
+              backgroundColor: 'rgba(54, 162, 235, 0.7)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Produto 3',
+              data: [0, 0, 0, 0, 0, 0],
+              backgroundColor: 'rgba(255, 206, 86, 0.7)',
+              borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Vendas por Produto'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      const ctx5 = document.getElementById('customerIdentificationChart').getContext('2d');
+      customerIdentificationChart = new Chart(ctx5, {
+        type: 'radar',
+        data: {
+          labels: ['Perfil Demográfico', 'Comportamento Online', 'Histórico de Compras', 'Interesses'],
+          datasets: [{
+            label: 'Precisão de Identificação',
+            data: [0, 0, 0, 0],
+            fill: true,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(255, 99, 132)',
+            pointBackgroundColor: 'rgb(255, 99, 132)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgb(255, 99, 132)'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Identificação de Clientes Potenciais'
+            }
+          },
+          scales: {
+            r: {
+              angleLines: {
+                display: false
+              },
+              suggestedMin: 0,
+              suggestedMax: 100
+            }
+          }
+        }
+      });
+
+      const ctx6 = document.getElementById('competitorAnalysisChart').getContext('2d');
+      competitorAnalysisChart = new Chart(ctx6, {
+        type: 'polarArea',
+        data: {
+          labels: ['Força da Marca', 'Participação de Mercado', 'Inovação', 'Preço'],
+          datasets: [{
+            label: 'Análise de Concorrentes',
+            data: [0, 0, 0, 0],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Análise de Concorrentes'
+            }
+          }
+        }
+      });
+
+      const ctx7 = document.getElementById('marketOpportunitiesChart').getContext('2d');
+      marketOpportunitiesChart = new Chart(ctx7, {
+        type: 'bar',
+        data: {
+          labels: ['Expansão Geográfica', 'Novos Produtos', 'Parcerias', 'Mercados Emergentes'],
+          datasets: [{
+            label: 'Potencial de Crescimento',
+            data: [0, 0, 0, 0],
+            backgroundColor: 'rgba(153, 102, 255, 0.7)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Oportunidades de Mercado'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+
+      const ctx8 = document.getElementById('jobDemandChart').getContext('2d');
+      jobDemandChart = new Chart(ctx8, {
+        type: 'bar',
+        data: {
+          labels: ['Desenvolvedor', 'Analista de Dados', 'Gerente de Projetos', 'Designer UX', 'Engenheiro DevOps'],
+          datasets: [{
+            label: 'Vagas Disponíveis',
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Vagas Mais Requisitadas'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      const ctx9 = document.getElementById('salaryRangeChart').getContext('2d');
+      salaryRangeChart = new Chart(ctx9, {
+        type: 'bar',
+        data: {
+          labels: ['Júnior', 'Pleno', 'Sênior'],
+          datasets: [{
+            label: 'Faixa Salarial (R$)',
+            data: [0, 0, 0],
+            backgroundColor: 'rgba(255, 159, 64, 0.7)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Faixa Salarial por Nível'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      const ctx10 = document.getElementById('jobLocationChart').getContext('2d');
+      jobLocationChart = new Chart(ctx10, {
+        type: 'pie',
+        data: {
+          labels: ['Remoto', 'Híbrido', 'Presencial'],
+          datasets: [{
+            label: 'Localização das Vagas',
+            data: [0, 0, 0],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Distribuição por Localização'
+            }
+          }
+        }
+      });
+
+      const ctx11 = document.getElementById('experienceRequiredChart').getContext('2d');
+      experienceRequiredChart = new Chart(ctx11, {
+        type: 'doughnut',
+        data: {
+          labels: ['0-2 anos', '3-5 anos', '6+ anos'],
+          datasets: [{
+            label: 'Experiência Requerida',
+            data: [0, 0, 0],
+            backgroundColor: [
+              'rgba(153, 102, 255, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(255, 159, 64, 0.7)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Experiência Requerida'
+            }
+          }
+        }
+      });
+
+      const ctx12 = document.getElementById('salesForecastChart').getContext('2d');
+      salesForecastChart = new Chart(ctx12, {
+        type: 'line',
+        data: {
+          labels: ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'],
+          datasets: [{
+            label: 'Previsão de Vendas',
+            data: [0, 0, 0, 0, 0, 0],
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Previsão de Vendas (Próximos 6 Meses)'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      updateTreeMap([]);
+
+      document.getElementById('searchButton').addEventListener('click', function () {
+        const companyName = document.getElementById('companySearch').value;
+        if (companyName.trim() !== "") {
+          updateCharts(companyName);
+        } else {
+          alert("Por favor, insira um nome de empresa.");
+        }
+      });
+    };
+  </script>
+</body>
+
+</html>
